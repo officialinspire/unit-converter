@@ -1,0 +1,1994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <title>INSPIRE | UNIT CONVERTER</title>
+  <!-- Import the required fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles with Tech Font */
+    :root {
+      --primary: #00ff41; /* Neon green */
+      --secondary: #00a2ff; /* Blue */
+      --accent: #ff0055; /* Pink */
+      --dark: #1a1a1a;
+      --darker: #121212;
+      --light: #ffffff;
+      --panel-bg: rgba(26, 26, 26, 0.9);
+      --grid-bg: rgba(18, 18, 18, 0.95);
+      --glow: 0 0 15px rgba(0, 255, 65, 0.7);
+    }
+    
+    body {
+      font-family: 'Rajdhani', sans-serif;
+      margin: 0;
+      padding: 0;
+      color: var(--light);
+      background-color: var(--darker);
+      overflow-x: hidden;
+    }
+    
+    /* Core styles matching the dashboard */
+    .inspire-interface {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      color: var(--light);
+      background-color: var(--darker);
+      border-radius: 8px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .inspire-interface::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, var(--dark) 0%, transparent 100%);
+      opacity: 0.7;
+      z-index: 0;
+    }
+    
+    .inspire-interface::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(circle at 20% 30%, rgba(30, 144, 255, 0.1) 0%, transparent 20%),
+        radial-gradient(circle at 80% 70%, rgba(0, 162, 255, 0.1) 0%, transparent 20%);
+      z-index: 0;
+    }
+    
+    h1, h2, h3 {
+      font-family: 'Orbitron', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin: 0;
+    }
+    
+    h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--secondary);
+      text-shadow: 0 0 8px rgba(30, 144, 255, 0.7);
+      margin: 0;
+      padding: 0;
+    }
+    
+    h2 {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: var(--secondary);
+      text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    }
+    
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--light);
+      text-shadow: 0 0 3px rgba(255, 255, 255, 0.5);
+    }
+    
+    p {
+      margin: 0;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      opacity: 0.9;
+      color: var(--light);
+    }
+    
+    .accent {
+      color: var(--accent);
+      animation: blink 2s infinite;
+    }
+    
+    @keyframes blink {
+      0%, 49% { opacity: 1; }
+      50%, 52% { opacity: 0; }
+      53%, 100% { opacity: 1; }
+    }
+    
+    /* Sidebar Navigation */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 200px;
+      height: 100%;
+      background-color: rgba(18, 18, 18, 0.95);
+      border-right: 2px solid var(--secondary);
+      padding: 20px 0;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+    }
+    
+    .sidebar-button {
+      position: relative;
+      z-index: 110;
+      display: block;
+      width: 80%;
+      margin: 8px 0;
+      padding: 10px 8px;
+      background-color: rgba(30, 144, 255, 0.1);
+      color: var(--secondary);
+      text-decoration: none;
+      text-align: center;
+      border-radius: 8px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(30, 144, 255, 0.2);
+      cursor: pointer;
+    }
+    
+    .sidebar-button:hover {
+      background-color: rgba(30, 144, 255, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(30, 144, 255, 0.7);
+      text-shadow: 0 0 5px var(--secondary);
+    }
+    
+    /* Main Content Wrapper */
+    .main-content {
+      margin-left: 200px;
+      padding: 20px;
+    }
+    
+    /* Interface Header */
+    .interface-header {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(30, 144, 255, 0.3);
+    }
+    
+    .inspire-logo {
+      margin-right: 30px;
+    }
+    
+    .logo-img {
+      width: 120px;
+      height: auto;
+      filter: drop-shadow(0 0 8px rgba(30, 144, 255, 0.7));
+    }
+    
+    .interface-title {
+      flex: 1;
+    }
+    
+    .subtitle {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      color: var(--secondary);
+      margin-top: 5px;
+      font-weight: 500;
+      opacity: 0.8;
+      text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    }
+    
+    /* Status Bar */
+    .status-bar {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 30px;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.9rem;
+      padding: 8px 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--secondary);
+      border-radius: 3px;
+    }
+    
+    .status-indicator {
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      color: var(--secondary);
+      text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    }
+    
+    .status-indicator::before {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--secondary);
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: pulse 2s infinite;
+      box-shadow: 0 0 8px rgba(30, 144, 255, 0.7);
+    }
+    
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.5; }
+      100% { opacity: 1; }
+    }
+    
+    .status-dots {
+      display: flex;
+      gap: 5px;
+    }
+    
+    .dot {
+      width: 6px;
+      height: 6px;
+      background: var(--secondary);
+      border-radius: 50%;
+      opacity: 0.5;
+      box-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    }
+    
+    .dot:nth-child(1) {
+      animation: dot-pulse 2s infinite;
+    }
+    
+    .dot:nth-child(2) {
+      animation: dot-pulse 2s infinite 0.5s;
+    }
+    
+    .dot:nth-child(3) {
+      animation: dot-pulse 2s infinite 1s;
+    }
+    
+    @keyframes dot-pulse {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+    
+    .status-code {
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+      color: var(--secondary);
+      text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    }
+    
+    /* Unit Converter specific styles */
+    .unit-converter-module {
+      position: relative;
+      z-index: 2;
+      padding: 25px;
+      background: var(--grid-bg);
+      border-radius: 8px;
+      border: 1px solid rgba(30, 144, 255, 0.2);
+      box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.5);
+      margin-bottom: 30px;
+    }
+    
+    /* Conversion types tabs */
+    .conversion-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin: 25px 0;
+    }
+    
+    .conversion-tab {
+      padding: 10px 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(30, 144, 255, 0.2);
+      border-radius: 5px;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--light);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .conversion-tab:hover {
+      background: rgba(30, 144, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .conversion-tab.active {
+      background: rgba(30, 144, 255, 0.2);
+      color: var(--secondary);
+      border-color: var(--secondary);
+      box-shadow: 0 0 10px rgba(30, 144, 255, 0.4);
+      position: relative;
+    }
+    
+    .conversion-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 2px;
+      background: var(--secondary);
+      box-shadow: 0 0 10px rgba(30, 144, 255, 0.7);
+    }
+    
+    /* Converter panel */
+    .converter-panel {
+      background: rgba(18, 18, 18, 0.9);
+      border: 1px solid rgba(30, 144, 255, 0.3);
+      border-radius: 10px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    }
+    
+    .converter-panel::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(90deg, var(--secondary), transparent);
+    }
+    
+    .converter-form {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      gap: 20px;
+      align-items: center;
+    }
+    
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .input-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: var(--secondary);
+      text-shadow: 0 0 5px rgba(30, 144, 255, 0.3);
+    }
+    
+    .input-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .input-field {
+      flex: 1;
+      padding: 12px 15px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid rgba(30, 144, 255, 0.3);
+      border-radius: 5px;
+      color: var(--light);
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .input-field:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.3);
+    }
+    
+    .unit-select {
+      padding: 12px 10px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 1px solid rgba(30, 144, 255, 0.3);
+      border-radius: 5px;
+      color: var(--secondary);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      appearance: none;
+      cursor: pointer;
+      min-width: 100px;
+      transition: all 0.3s ease;
+    }
+    
+    .unit-select:focus {
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.3);
+    }
+    
+    /* Switch direction button */
+    .switch-btn {
+      background: rgba(255, 0, 85, 0.1);
+      border: 1px solid rgba(255, 0, 85, 0.3);
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    .switch-btn:hover {
+      background: rgba(255, 0, 85, 0.2);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 0, 85, 0.5);
+      transform: rotate(180deg);
+    }
+    
+    .switch-icon {
+      color: var(--accent);
+      font-size: 1.5rem;
+      filter: drop-shadow(0 0 5px rgba(255, 0, 85, 0.5));
+    }
+
+    /* Formula display section */
+    .formula-section {
+      margin-top: 30px;
+      padding: 15px;
+      background: rgba(0, 0, 0, 0.4);
+      border-left: 3px solid var(--accent);
+      border-radius: 5px;
+      font-family: 'Rajdhani', sans-serif;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .formula-label {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+    
+    .formula-text {
+      font-size: 0.95rem;
+      color: var(--light);
+      font-weight: 500;
+    }
+    
+    /* Common conversions section */
+    .common-conversions {
+      margin-top: 30px;
+    }
+    
+    .common-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1rem;
+      color: var(--secondary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .common-title::before {
+      content: '//';
+      margin-right: 5px;
+      color: var(--secondary);
+      opacity: 0.8;
+    }
+    
+    .common-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+    }
+    
+    .common-card {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(30, 144, 255, 0.2);
+      border-radius: 5px;
+      padding: 12px;
+      transition: all 0.3s ease;
+    }
+    
+    .common-card:hover {
+      border-color: var(--secondary);
+      box-shadow: 0 0 15px rgba(30, 144, 255, 0.2);
+      transform: translateY(-2px);
+    }
+    
+    .common-label {
+      font-size: 0.85rem;
+      color: var(--light);
+      opacity: 0.8;
+      margin-bottom: 5px;
+    }
+    
+    .common-value {
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--secondary);
+    }
+    
+    /* Results panel blinker */
+    .panel-blinker {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--secondary);
+      bottom: 15px;
+      right: 15px;
+      animation: blinker 3s infinite;
+      box-shadow: 0 0 10px rgba(30, 144, 255, 0.8);
+    }
+    
+    @keyframes blinker {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    
+    /* Interface Footer */
+    .interface-footer {
+      position: relative;
+      z-index: 2;
+      margin-top: 30px;
+      padding-top: 20px;
+    }
+    
+    .footer-line {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+      margin-bottom: 15px;
+    }
+    
+    .footer-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'Rajdhani', sans-serif;
+      font-size: 0.85rem;
+      opacity: 0.7;
+    }
+    
+    .footer-code {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--secondary);
+      text-shadow: 0 0 5px rgba(30, 144, 255, 0.5);
+    }
+    
+    /* Added scanning animation */
+    @keyframes scan {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 0% 100%; }
+    }
+    
+    .scanning {
+      position: relative;
+    }
+    
+    .scanning::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(to bottom, transparent, rgba(0, 255, 65, 0.2), transparent);
+      background-size: 100% 300%;
+      animation: scan 2s linear infinite;
+      pointer-events: none;
+    }
+    
+    /* Added glitch effect animation */
+    @keyframes glitch {
+      0% { transform: translateX(0); }
+      25% { transform: translateX(-5px); }
+      50% { transform: translateX(5px); filter: hue-rotate(90deg); }
+      75% { transform: translateX(-2px); }
+      100% { transform: translateX(0); }
+    }
+    
+    .glitch {
+      animation: glitch 0.3s forwards;
+    }
+    
+    /* Custom styles for touch devices */
+    .touch-device .sidebar-button,
+    .touch-device .conversion-tab,
+    .touch-device .switch-btn {
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    
+    .mobile-device .input-field,
+    .mobile-device .unit-select {
+      -webkit-tap-highlight-color: rgba(30, 144, 255, 0.1);
+    }
+    
+    /* Fast tap response */
+    .touch-device .sidebar-button:active,
+    .touch-device .conversion-tab:active,
+    .touch-device .switch-btn:active {
+      transform: scale(0.97);
+      transition: transform 0.1s;
+    }
+    
+    .touch-device .switch-btn:active {
+      transform: rotate(90deg) scale(0.97);
+    }
+    
+    /* Fix for iOS Safari scrolling issues */
+    @supports (-webkit-overflow-scrolling: touch) {
+      body {
+        -webkit-overflow-scrolling: touch;
+      }
+      
+      .unit-converter-module {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+    
+    /* Mobile-specific device classes */
+    .mobile-device {
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    .ios-device {
+      /* iOS Safari specific styles */
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .ios-device .main-content {
+      padding-top: max(20px, env(safe-area-inset-top));
+      padding-bottom: max(20px, env(safe-area-inset-bottom));
+    }
+    
+    .android-chrome {
+      /* Android Chrome specific styles */
+      min-height: calc(var(--vh, 1vh) * 100);
+    }
+    
+    /* Enhanced Mobile Optimization */
+    @media (max-width: 992px) {
+      .converter-form {
+        grid-template-columns: 1fr 50px 1fr;
+        gap: 12px;
+      }
+      
+      .switch-btn {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+      }
+      
+      .common-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 12px;
+      }
+      
+      .conversion-tabs {
+        gap: 8px;
+        justify-content: center;
+      }
+      
+      .conversion-tab {
+        padding: 10px 12px;
+        font-size: 0.8rem;
+        min-width: 70px;
+        text-align: center;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+        border-right: none;
+        border-bottom: 2px solid var(--secondary);
+        padding: 12px 0;
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      
+      .sidebar-button {
+        width: auto;
+        margin: 4px;
+        font-size: 0.75rem;
+        padding: 12px 10px;
+        min-width: 80px;
+        min-height: 44px; /* Touch-friendly size */
+      }
+      
+      .main-content {
+        margin-left: 0;
+        padding: 12px;
+      }
+      
+      .interface-header {
+        flex-direction: column;
+        text-align: center;
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+      }
+      
+      .inspire-logo {
+        margin-right: 0;
+        margin-bottom: 12px;
+      }
+      
+      .logo-img {
+        width: 100px;
+      }
+      
+      h1 {
+        font-size: 1.8rem;
+      }
+      
+      .subtitle {
+        font-size: 0.95rem;
+      }
+      
+      .status-bar {
+        flex-direction: column;
+        gap: 8px;
+        text-align: center;
+        padding: 12px;
+        margin-bottom: 20px;
+      }
+      
+      .status-dots {
+        display: none;
+      }
+      
+      .unit-converter-module {
+        padding: 18px 12px;
+      }
+      
+      .conversion-tabs {
+        justify-content: center;
+        gap: 6px;
+        margin: 20px 0;
+      }
+      
+      .conversion-tab {
+        padding: 12px 10px;
+        font-size: 0.75rem;
+        min-height: 44px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 1;
+        min-width: 65px;
+        max-width: 85px;
+      }
+      
+      .converter-panel {
+        padding: 20px 15px;
+      }
+      
+      .converter-form {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        align-items: stretch;
+      }
+      
+      .input-group {
+        gap: 12px;
+      }
+      
+      .input-label {
+        font-size: 0.85rem;
+        text-align: center;
+      }
+      
+      .input-row {
+        gap: 12px;
+      }
+      
+      .input-field {
+        padding: 15px 12px;
+        font-size: 1.1rem;
+        min-height: 44px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      
+      .unit-select {
+        padding: 15px 12px;
+        font-size: 0.85rem;
+        min-width: 120px;
+        min-height: 44px;
+        border-radius: 8px;
+        /* Prevent zoom on iOS */
+        font-size: 16px;
+      }
+      
+      .switch-btn {
+        width: 60px;
+        height: 60px;
+        margin: 20px auto;
+        transform: rotate(90deg);
+        align-self: center;
+      }
+      
+      .switch-btn:hover {
+        transform: rotate(270deg);
+      }
+      
+      .switch-btn:active {
+        transform: rotate(90deg) scale(0.95);
+      }
+      
+      .formula-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 15px;
+        margin-top: 25px;
+      }
+      
+      .common-conversions {
+        margin-top: 25px;
+      }
+      
+      .common-title {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      
+      .common-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      
+      .common-card {
+        padding: 15px;
+        border-radius: 8px;
+        text-align: center;
+        transition: all 0.2s ease;
+      }
+      
+      .common-card:active {
+        transform: scale(0.98);
+      }
+      
+      .common-label {
+        font-size: 0.85rem;
+        margin-bottom: 8px;
+      }
+      
+      .common-value {
+        font-size: 1.1rem;
+      }
+      
+      /* Enhanced touch targets */
+      .conversion-tab,
+      .sidebar-button,
+      .switch-btn,
+      .input-field,
+      .unit-select {
+        -webkit-tap-highlight-color: rgba(30, 144, 255, 0.2);
+      }
+    }
+    
+    /* Further mobile optimizations for smaller screens */
+    @media (max-width: 480px) {
+      .inspire-interface {
+        padding: 15px 8px;
+      }
+      
+      .unit-converter-module {
+        padding: 12px 8px;
+      }
+      
+      h1 {
+        font-size: 1.6rem;
+      }
+      
+      .subtitle {
+        font-size: 0.85rem;
+      }
+      
+      .converter-panel {
+        padding: 15px 10px;
+      }
+      
+      .conversion-tabs {
+        gap: 4px;
+        margin: 15px 0;
+      }
+      
+      .conversion-tab {
+        padding: 10px 6px;
+        font-size: 0.7rem;
+        min-width: 55px;
+        max-width: 75px;
+      }
+      
+      .input-field {
+        padding: 12px 10px;
+        font-size: 1rem;
+      }
+      
+      .unit-select {
+        padding: 12px 8px;
+        font-size: 0.8rem;
+        min-width: 100px;
+      }
+      
+      .switch-btn {
+        width: 50px;
+        height: 50px;
+      }
+      
+      .formula-section {
+        padding: 12px;
+      }
+      
+      .formula-label {
+        font-size: 0.8rem;
+      }
+      
+      .formula-text {
+        font-size: 0.85rem;
+      }
+      
+      .common-card {
+        padding: 12px;
+      }
+      
+      .common-label {
+        font-size: 0.8rem;
+        margin-bottom: 6px;
+      }
+      
+      .common-value {
+        font-size: 1rem;
+      }
+    }
+    
+    /* iOS Safari specific fixes */
+    @supports (-webkit-appearance: none) and (not (appearance: none)) {
+      .unit-select {
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIiIGhlaWdodD0iOCIgdmlld0JveD0iMCAwIDEyIDgiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0xIDFMNiA2TDExIDEiIHN0cm9rZT0iIzAwYTJmZiIgc3Ryb2tlLXdpZHRoPSIyIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz4KPC9zdmc+");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 12px 8px;
+        padding-right: 35px;
+      }
+      
+      .input-field {
+        -webkit-appearance: none;
+        border-radius: 8px;
+      }
+    }
+    
+    /* Android Chrome specific optimizations */
+    @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: 0.001dpcm) {
+      .unit-converter-module {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+      }
+      
+      .converter-panel {
+        transform: translateZ(0);
+        backface-visibility: hidden;
+      }
+    }
+    
+    /* Touch interface improvements */
+    @media (max-width: 768px) {
+      /* Prevent double-tap zoom */
+      .conversion-tab,
+      .sidebar-button,
+      .switch-btn,
+      .common-card {
+        touch-action: manipulation;
+      }
+      
+      /* Better spacing for touch */
+      .input-group {
+        margin-bottom: 15px;
+      }
+      
+      /* Smooth transitions for mobile */
+      .conversion-tab,
+      .common-card,
+      .switch-btn {
+        transition: all 0.2s ease;
+      }
+      
+      /* Active states for touch feedback */
+      .conversion-tab:active {
+        transform: scale(0.95);
+      }
+      
+      .switch-btn:active {
+        transform: rotate(90deg) scale(0.9);
+      }
+      
+      /* Focus styles for accessibility */
+      .input-field:focus,
+      .unit-select:focus {
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(30, 144, 255, 0.2);
+        outline: none;
+      }
+    }
+    
+    /* Landscape mode optimizations for mobile */
+    @media (max-width: 768px) and (orientation: landscape) {
+      .converter-form {
+        grid-template-columns: 1fr 50px 1fr;
+        gap: 15px;
+      }
+      
+      .switch-btn {
+        transform: rotate(0deg);
+        margin: 0;
+      }
+      
+      .switch-btn:hover {
+        transform: rotate(180deg);
+      }
+      
+      .switch-btn:active {
+        transform: scale(0.95);
+      }
+      
+      .conversion-tabs {
+        gap: 8px;
+      }
+      
+      .conversion-tab {
+        min-width: 70px;
+        max-width: 90px;
+      }
+      
+      .common-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      }
+    }
+    
+    /* High DPI mobile screens */
+    @media (max-width: 768px) and (-webkit-min-device-pixel-ratio: 2) {
+      .logo-img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+      }
+      
+      .switch-icon {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Navigation -->
+  <div class="sidebar">
+    <a href="https://192.168.0.136" class="sidebar-button">🏠 HOME</a>
+    <a href="https://192.168.0.136:3000/" class="sidebar-button">📡 MESHTASTIC</a>
+    <a href="http://192.168.0.136:1880/ui/" class="sidebar-button">🔄 NODE-RED</a>
+    <a href="/index.html" class="sidebar-button">🛠️ TEAM TOOLS</a>
+    <a href="https://192.168.0.136:8080/" class="sidebar-button">🗄️ ARCHIVE</a>
+    <a href="https://192.168.0.136:9000/" class="sidebar-button">⚙️ ADMIN PANEL</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="inspire-interface">
+      <!-- Interface Header with Logo -->
+      <div class="interface-header">
+        <div class="inspire-logo">
+          <img src="inspire.png" alt="INSPIRE Logo" class="logo-img">
+        </div>
+        <div class="interface-title">
+          <h1>UNIT<span class="accent">_</span>CONVERTER</h1>
+          <div class="subtitle">// MEASUREMENT PRECISION MODULE</div>
+        </div>
+      </div>
+
+      <!-- Interface Status Bar -->
+      <div class="status-bar">
+        <div class="status-indicator online">CONVERTER ONLINE</div>
+        <div class="status-dots">
+          <span class="dot"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
+        </div>
+        <div class="status-code" id="header-info">🌐 WAN: LOADING... // LAN: LOADING... // TEAM INSPIRE</div>
+      </div>
+      
+      <!-- Unit Converter Module -->
+      <div class="unit-converter-module">
+        <p>Select a conversion type below to transform units with precision:</p>
+        
+        <!-- Conversion Type Tabs -->
+        <div class="conversion-tabs" id="conversion-tabs">
+          <div class="conversion-tab active" data-type="length">LENGTH</div>
+          <div class="conversion-tab" data-type="mass">MASS</div>
+          <div class="conversion-tab" data-type="temperature">TEMPERATURE</div>
+          <div class="conversion-tab" data-type="volume">VOLUME</div>
+          <div class="conversion-tab" data-type="area">AREA</div>
+          <div class="conversion-tab" data-type="speed">SPEED</div>
+          <div class="conversion-tab" data-type="time">TIME</div>
+          <div class="conversion-tab" data-type="digital">DIGITAL</div>
+        </div>
+
+        <!-- Converter Panel -->
+        <div class="converter-panel">
+          <div class="converter-form">
+            <div class="input-group">
+              <div class="input-label">SOURCE VALUE</div>
+              <div class="input-row">
+                <input type="number" id="from-value" class="input-field" value="1" step="any">
+                <select id="from-unit" class="unit-select">
+                  <!-- Units will be populated by JavaScript -->
+                </select>
+              </div>
+            </div>
+            
+            <div class="switch-btn" id="switch-btn">
+              <div class="switch-icon">↔️</div>
+            </div>
+            
+            <div class="input-group">
+              <div class="input-label">CONVERTED VALUE</div>
+              <div class="input-row">
+                <input type="number" id="to-value" class="input-field" readonly>
+                <select id="to-unit" class="unit-select">
+                  <!-- Units will be populated by JavaScript -->
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Formula Display -->
+          <div class="formula-section">
+            <div>
+              <div class="formula-label">CONVERSION FORMULA</div>
+              <div class="formula-text" id="formula-text">1 meter = 3.28084 feet</div>
+            </div>
+            <div id="precision-info" style="text-align: right;">
+              <div class="formula-label">PRECISION</div>
+              <div class="formula-text">HIGH-ACCURACY MODE</div>
+            </div>
+          </div>
+          
+          <!-- Common Conversions -->
+          <div class="common-conversions">
+            <div class="common-title">COMMON CONVERSIONS</div>
+            <div class="common-grid" id="common-grid">
+              <!-- Common conversions will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div class="panel-blinker"></div>
+        </div>
+      </div>
+
+      <!-- Interface Footer -->
+      <div class="interface-footer">
+        <div class="footer-line"></div>
+        <div class="footer-content">
+          <div class="footer-text">🌐 INSPIRE HQ — MESHSTORM OPS // FXBG LOCALNET // Offline Capable</div>
+          <div class="footer-code">VER.1.3.7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IP Info Injection -->
+  <script src="/ip-info.js"></script>
+  
+  <!-- Unit Converter JavaScript -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if device is touch-enabled
+      if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+        document.body.classList.add('touch-device');
+      }
+      
+      // Elements
+      const conversionTabs = document.querySelectorAll('.conversion-tab');
+      const fromValueInput = document.getElementById('from-value');
+      const toValueInput = document.getElementById('to-value');
+      const fromUnitSelect = document.getElementById('from-unit');
+      const toUnitSelect = document.getElementById('to-unit');
+      const switchBtn = document.getElementById('switch-btn');
+      const formulaText = document.getElementById('formula-text');
+      const commonGrid = document.getElementById('common-grid');
+      
+      // Current conversion type
+      let currentType = 'length';
+      
+      // Units definition
+      const units = {
+        length: {
+          meters: { label: 'Meters (m)', factor: 1 },
+          kilometers: { label: 'Kilometers (km)', factor: 0.001 },
+          centimeters: { label: 'Centimeters (cm)', factor: 100 },
+          millimeters: { label: 'Millimeters (mm)', factor: 1000 },
+          miles: { label: 'Miles (mi)', factor: 0.000621371 },
+          yards: { label: 'Yards (yd)', factor: 1.09361 },
+          feet: { label: 'Feet (ft)', factor: 3.28084 },
+          inches: { label: 'Inches (in)', factor: 39.3701 },
+          nauticalMiles: { label: 'Nautical Miles (nmi)', factor: 0.000539957 }
+        },
+        mass: {
+          kilograms: { label: 'Kilograms (kg)', factor: 1 },
+          grams: { label: 'Grams (g)', factor: 1000 },
+          milligrams: { label: 'Milligrams (mg)', factor: 1000000 },
+          metricTons: { label: 'Metric Tons (t)', factor: 0.001 },
+          pounds: { label: 'Pounds (lb)', factor: 2.20462 },
+          ounces: { label: 'Ounces (oz)', factor: 35.274 },
+          stones: { label: 'Stones (st)', factor: 0.157473 }
+        },
+        temperature: {
+          celsius: { label: 'Celsius (°C)' },
+          fahrenheit: { label: 'Fahrenheit (°F)' },
+          kelvin: { label: 'Kelvin (K)' }
+        },
+        volume: {
+          liters: { label: 'Liters (L)', factor: 1 },
+          milliliters: { label: 'Milliliters (mL)', factor: 1000 },
+          cubicMeters: { label: 'Cubic Meters (m³)', factor: 0.001 },
+          gallonsUS: { label: 'Gallons (US)', factor: 0.264172 },
+          quartsUS: { label: 'Quarts (US)', factor: 1.05669 },
+          pintsUS: { label: 'Pints (US)', factor: 2.11338 },
+          cupsUS: { label: 'Cups (US)', factor: 4.22675 },
+          fluidOuncesUS: { label: 'Fluid Ounces (US)', factor: 33.814 },
+          gallonsUK: { label: 'Gallons (UK)', factor: 0.219969 },
+          quartsUK: { label: 'Quarts (UK)', factor: 0.879877 }
+        },
+        area: {
+          squareMeters: { label: 'Square Meters (m²)', factor: 1 },
+          squareKilometers: { label: 'Square Kilometers (km²)', factor: 0.000001 },
+          squareCentimeters: { label: 'Square Centimeters (cm²)', factor: 10000 },
+          hectares: { label: 'Hectares (ha)', factor: 0.0001 },
+          acres: { label: 'Acres', factor: 0.000247105 },
+          squareMiles: { label: 'Square Miles (mi²)', factor: 3.86102e-7 },
+          squareYards: { label: 'Square Yards (yd²)', factor: 1.19599 },
+          squareFeet: { label: 'Square Feet (ft²)', factor: 10.7639 },
+          squareInches: { label: 'Square Inches (in²)', factor: 1550 }
+        },
+        speed: {
+          metersPerSecond: { label: 'Meters per Second (m/s)', factor: 1 },
+          kilometersPerHour: { label: 'Kilometers per Hour (km/h)', factor: 3.6 },
+          milesPerHour: { label: 'Miles per Hour (mph)', factor: 2.23694 },
+          knots: { label: 'Knots (kn)', factor: 1.94384 },
+          feetPerSecond: { label: 'Feet per Second (ft/s)', factor: 3.28084 }
+        },
+        time: {
+          seconds: { label: 'Seconds (s)', factor: 1 },
+          milliseconds: { label: 'Milliseconds (ms)', factor: 1000 },
+          minutes: { label: 'Minutes (min)', factor: 1/60 },
+          hours: { label: 'Hours (h)', factor: 1/3600 },
+          days: { label: 'Days (d)', factor: 1/86400 },
+          weeks: { label: 'Weeks (wk)', factor: 1/604800 },
+          months: { label: 'Months (avg)', factor: 1/2629800 },
+          years: { label: 'Years (yr)', factor: 1/31557600 }
+        },
+        digital: {
+          bytes: { label: 'Bytes (B)', factor: 1 },
+          kilobytes: { label: 'Kilobytes (KB)', factor: 1/1024 },
+          megabytes: { label: 'Megabytes (MB)', factor: 1/1048576 },
+          gigabytes: { label: 'Gigabytes (GB)', factor: 1/1073741824 },
+          terabytes: { label: 'Terabytes (TB)', factor: 1/1099511627776 },
+          bits: { label: 'Bits (bit)', factor: 8 },
+          kilobits: { label: 'Kilobits (Kb)', factor: 8/1024 },
+          megabits: { label: 'Megabits (Mb)', factor: 8/1048576 },
+          gigabits: { label: 'Gigabits (Gb)', factor: 8/1073741824 }
+        }
+      };
+      
+      // Common conversions for each type
+      const commonConversions = {
+        length: [
+          { from: 'meters', to: 'feet', value: 1 },
+          { from: 'kilometers', to: 'miles', value: 1 },
+          { from: 'centimeters', to: 'inches', value: 30 },
+          { from: 'meters', to: 'yards', value: 100 }
+        ],
+        mass: [
+          { from: 'kilograms', to: 'pounds', value: 1 },
+          { from: 'grams', to: 'ounces', value: 100 },
+          { from: 'metricTons', to: 'pounds', value: 1 },
+          { from: 'kilograms', to: 'stones', value: 70 }
+        ],
+        temperature: [
+          { from: 'celsius', to: 'fahrenheit', value: 0 },
+          { from: 'celsius', to: 'fahrenheit', value: 100 },
+          { from: 'fahrenheit', to: 'celsius', value: 32 },
+          { from: 'celsius', to: 'kelvin', value: 0 }
+        ],
+        volume: [
+          { from: 'liters', to: 'gallonsUS', value: 1 },
+          { from: 'milliliters', to: 'fluidOuncesUS', value: 30 },
+          { from: 'liters', to: 'cupsUS', value: 1 },
+          { from: 'liters', to: 'gallonsUK', value: 4 }
+        ],
+        area: [
+          { from: 'squareMeters', to: 'squareFeet', value: 1 },
+          { from: 'hectares', to: 'acres', value: 1 },
+          { from: 'squareKilometers', to: 'squareMiles', value: 1 },
+          { from: 'squareMeters', to: 'squareYards', value: 10 }
+        ],
+        speed: [
+          { from: 'kilometersPerHour', to: 'milesPerHour', value: 100 },
+          { from: 'metersPerSecond', to: 'kilometersPerHour', value: 20 },
+          { from: 'knots', to: 'kilometersPerHour', value: 10 },
+          { from: 'milesPerHour', to: 'feetPerSecond', value: 60 }
+        ],
+        time: [
+          { from: 'days', to: 'hours', value: 1 },
+          { from: 'hours', to: 'minutes', value: 1 },
+          { from: 'weeks', to: 'days', value: 1 },
+          { from: 'years', to: 'days', value: 1 }
+        ],
+        digital: [
+          { from: 'gigabytes', to: 'megabytes', value: 1 },
+          { from: 'megabytes', to: 'kilobytes', value: 1 },
+          { from: 'gigabits', to: 'megabits', value: 1 },
+          { from: 'terabytes', to: 'gigabytes', value: 1 }
+        ]
+      };
+      
+      // Temperature conversion functions
+      function convertTemperature(value, fromUnit, toUnit) {
+        // Convert from source unit to Celsius
+        let celsius;
+        if (fromUnit === 'celsius') {
+          celsius = value;
+        } else if (fromUnit === 'fahrenheit') {
+          celsius = (value - 32) * 5/9;
+        } else if (fromUnit === 'kelvin') {
+          celsius = value - 273.15;
+        }
+        
+        // Convert from Celsius to destination unit
+        if (toUnit === 'celsius') {
+          return celsius;
+        } else if (toUnit === 'fahrenheit') {
+          return celsius * 9/5 + 32;
+        } else if (toUnit === 'kelvin') {
+          return celsius + 273.15;
+        }
+      }
+      
+      // Get temperature conversion formula
+      function getTemperatureFormula(fromUnit, toUnit) {
+        if (fromUnit === 'celsius' && toUnit === 'fahrenheit') {
+          return '°F = °C × 9/5 + 32';
+        } else if (fromUnit === 'fahrenheit' && toUnit === 'celsius') {
+          return '°C = (°F - 32) × 5/9';
+        } else if (fromUnit === 'celsius' && toUnit === 'kelvin') {
+          return 'K = °C + 273.15';
+        } else if (fromUnit === 'kelvin' && toUnit === 'celsius') {
+          return '°C = K - 273.15';
+        } else if (fromUnit === 'fahrenheit' && toUnit === 'kelvin') {
+          return 'K = (°F - 32) × 5/9 + 273.15';
+        } else if (fromUnit === 'kelvin' && toUnit === 'fahrenheit') {
+          return '°F = (K - 273.15) × 9/5 + 32';
+        } else {
+          return '1 = 1 (No conversion needed)';
+        }
+      }
+      
+      // Standard unit conversion
+      function convertStandard(value, fromUnit, toUnit, type) {
+        const fromFactor = units[type][fromUnit].factor;
+        const toFactor = units[type][toUnit].factor;
+        return value * (toFactor / fromFactor);
+      }
+      
+      // Get standard conversion formula
+      function getStandardFormula(fromUnit, toUnit, type) {
+        const fromLabel = units[type][fromUnit].label.split(' ')[0];
+        const toLabel = units[type][toUnit].label.split(' ')[0];
+        
+        // Calculate conversion factor between the two units
+        const fromFactor = units[type][fromUnit].factor;
+        const toFactor = units[type][toUnit].factor;
+        const factor = toFactor / fromFactor;
+        
+        if (factor === 1) {
+          return `1 ${fromLabel} = 1 ${toLabel} (No conversion needed)`;
+        } else if (factor > 0.0001 && factor < 10000) {
+          return `1 ${fromLabel} = ${factor.toFixed(6)} ${toLabel}`;
+        } else {
+          return `1 ${fromLabel} = ${factor.toExponential(4)} ${toLabel}`;
+        }
+      }
+      
+      // Format the result with appropriate precision
+      function formatResult(value) {
+        if (value === 0) return '0';
+        
+        const absValue = Math.abs(value);
+        
+        if (absValue < 0.0001 || absValue > 1000000) {
+          return value.toExponential(6);
+        } else if (absValue < 0.01) {
+          return value.toFixed(6);
+        } else if (absValue < 1) {
+          return value.toFixed(4);
+        } else if (absValue < 10) {
+          return value.toFixed(3);
+        } else if (absValue < 100) {
+          return value.toFixed(2);
+        } else {
+          return value.toFixed(1);
+        }
+      }
+      
+      // Perform the conversion
+      function performConversion() {
+        const fromValue = parseFloat(fromValueInput.value);
+        const fromUnit = fromUnitSelect.value;
+        const toUnit = toUnitSelect.value;
+        
+        if (isNaN(fromValue)) {
+          toValueInput.value = '';
+          return;
+        }
+        
+        let result;
+        let formula;
+        
+        // For temperature, use special conversion logic
+        if (currentType === 'temperature') {
+          result = convertTemperature(fromValue, fromUnit, toUnit);
+          formula = getTemperatureFormula(fromUnit, toUnit);
+        } else {
+          // For all other unit types
+          result = convertStandard(fromValue, fromUnit, toUnit, currentType);
+          formula = getStandardFormula(fromUnit, toUnit, currentType);
+        }
+        
+        // Display result and formula
+        toValueInput.value = formatResult(result);
+        formulaText.textContent = formula;
+        
+        // Add glitch effect
+        addGlitchEffect(toValueInput);
+      }
+      
+      // Populate units for given type
+      function populateUnits(type) {
+        fromUnitSelect.innerHTML = '';
+        toUnitSelect.innerHTML = '';
+        
+        const typeUnits = units[type];
+        
+        for (const [key, unit] of Object.entries(typeUnits)) {
+          const fromOption = document.createElement('option');
+          fromOption.value = key;
+          fromOption.textContent = unit.label;
+          fromUnitSelect.appendChild(fromOption);
+          
+          const toOption = document.createElement('option');
+          toOption.value = key;
+          toOption.textContent = unit.label;
+          toUnitSelect.appendChild(toOption);
+        }
+        
+        // Set default second option for "to" select
+        if (toUnitSelect.options.length > 1) {
+          toUnitSelect.selectedIndex = 1;
+        }
+      }
+      
+      // Generate common conversions
+      function generateCommonConversions(type) {
+        commonGrid.innerHTML = '';
+        
+        commonConversions[type].forEach(conversion => {
+          let result, formattedValue;
+          const fromUnitLabel = units[type][conversion.from].label.split(' ')[0];
+          const toUnitLabel = units[type][conversion.to].label.split(' ')[0];
+          
+          if (type === 'temperature') {
+            result = convertTemperature(conversion.value, conversion.from, conversion.to);
+            formattedValue = formatResult(result);
+          } else {
+            result = convertStandard(conversion.value, conversion.from, conversion.to, type);
+            formattedValue = formatResult(result);
+          }
+          
+          const card = document.createElement('div');
+          card.className = 'common-card';
+          card.innerHTML = `
+            <div class="common-label">${conversion.value} ${fromUnitLabel} =</div>
+            <div class="common-value">${formattedValue} ${toUnitLabel}</div>
+          `;
+          
+          commonGrid.appendChild(card);
+        });
+      }
+      
+      // Switch between conversion types
+      function switchConversionType(type) {
+        currentType = type;
+        
+        // Update active tab
+        conversionTabs.forEach(tab => {
+          if (tab.dataset.type === type) {
+            tab.classList.add('active');
+          } else {
+            tab.classList.remove('active');
+          }
+        });
+        
+        // Populate unit selects
+        populateUnits(type);
+        
+        // Generate common conversions
+        generateCommonConversions(type);
+        
+        // Perform initial conversion
+        performConversion();
+        
+        // Add glitch effect to UI
+        addGlitchEffect(document.querySelector('.converter-panel'));
+      }
+      
+      // Add glitch effect to element
+      function addGlitchEffect(element) {
+        element.classList.add('glitch');
+        setTimeout(() => {
+          element.classList.remove('glitch');
+        }, 300);
+      }
+      
+      // Set up event listeners
+      function setupEventListeners() {
+        // Conversion tabs
+        conversionTabs.forEach(tab => {
+          tab.addEventListener('click', function() {
+            switchConversionType(this.dataset.type);
+          });
+        });
+        
+        // Input and select change events
+        fromValueInput.addEventListener('input', performConversion);
+        fromUnitSelect.addEventListener('change', performConversion);
+        toUnitSelect.addEventListener('change', performConversion);
+        
+        // Switch button
+        switchBtn.addEventListener('click', function() {
+          // Swap the selected units
+          const fromIndex = fromUnitSelect.selectedIndex;
+          const toIndex = toUnitSelect.selectedIndex;
+          
+          fromUnitSelect.selectedIndex = toIndex;
+          toUnitSelect.selectedIndex = fromIndex;
+          
+          // Re-run conversion
+          performConversion();
+          
+          // Add glitch effect
+          addGlitchEffect(this);
+        });
+        
+        // Handle touch events for mobile with enhanced functionality
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+          // Make buttons more responsive on touch devices
+          const touchButtons = document.querySelectorAll('.sidebar-button, .conversion-tab, .switch-btn');
+          
+          touchButtons.forEach(button => {
+            button.addEventListener('touchstart', function(e) {
+              e.preventDefault(); // Prevent double-tap zoom
+              this.style.transform = this.classList.contains('switch-btn') ? 
+                'rotate(90deg) scale(0.95)' : 'scale(0.95)';
+              
+              if (this.classList.contains('sidebar-button')) {
+                this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3), 0 0 10px rgba(30, 144, 255, 0.5)';
+              } else if (this.classList.contains('switch-btn')) {
+                this.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3), 0 0 10px rgba(255, 0, 85, 0.5)';
+              } else if (this.classList.contains('conversion-tab')) {
+                this.style.backgroundColor = 'rgba(30, 144, 255, 0.3)';
+              }
+            });
+            
+            button.addEventListener('touchend', function(e) {
+              e.preventDefault();
+              
+              // Reset transforms based on button type
+              if (this.classList.contains('switch-btn')) {
+                this.style.transform = window.innerWidth <= 768 ? 'rotate(90deg)' : '';
+              } else {
+                this.style.transform = '';
+              }
+              
+              this.style.boxShadow = '';
+              
+              if (this.classList.contains('conversion-tab')) {
+                // Only reset background if not active
+                if (!this.classList.contains('active')) {
+                  this.style.backgroundColor = '';
+                }
+              }
+            });
+            
+            // Prevent context menu on long press for mobile
+            button.addEventListener('contextmenu', function(e) {
+              e.preventDefault();
+            });
+          });
+          
+          // Enhanced mobile input handling
+          const inputs = document.querySelectorAll('.input-field, .unit-select');
+          inputs.forEach(input => {
+            // Add mobile-specific styling on focus
+            input.addEventListener('focus', function() {
+              this.style.borderColor = 'var(--secondary)';
+              this.style.boxShadow = '0 0 0 3px rgba(30, 144, 255, 0.2)';
+              
+              // Scroll element into view on mobile
+              if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                  this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 100);
+              }
+            });
+            
+            input.addEventListener('blur', function() {
+              this.style.borderColor = '';
+              this.style.boxShadow = '';
+            });
+          });
+          
+          // Fix for iOS Safari to prevent zoom on input focus
+          if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            // Ensure all inputs have font-size >= 16px to prevent zoom
+            inputs.forEach(input => {
+              if (input.tagName === 'SELECT') {
+                input.style.fontSize = '16px';
+              }
+            });
+            
+            // iOS-specific viewport handling  
+            const viewport = document.querySelector('meta[name="viewport"]');
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+          }
+          
+          // Android Chrome specific optimizations
+          if (/Android.*Chrome/.test(navigator.userAgent)) {
+            // Handle Android Chrome address bar height changes
+            const setVH = () => {
+              const vh = window.innerHeight * 0.01;
+              document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            
+            setVH();
+            window.addEventListener('resize', setVH);
+            
+            // Force repaint for better rendering on Android
+            const forceRepaint = (element) => {
+              element.style.display = 'none';
+              element.offsetHeight; // Trigger reflow
+              element.style.display = '';
+            };
+            
+            // Apply to converter panel after interactions
+            switchBtn.addEventListener('click', () => {
+              setTimeout(() => forceRepaint(document.querySelector('.converter-panel')), 50);
+            });
+          }
+          
+          // Mobile-specific gesture handling
+          let touchStartX = 0;
+          let touchStartY = 0;
+          
+          const converterPanel = document.querySelector('.converter-panel');
+          
+          converterPanel.addEventListener('touchstart', function(e) {
+            touchStartX = e.touches[0].clientX;
+            touchStartY = e.touches[0].clientY;
+          });
+          
+          converterPanel.addEventListener('touchend', function(e) {
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            const deltaX = touchStartX - touchEndX;
+            const deltaY = touchStartY - touchEndY;
+            
+            // Horizontal swipe for switching units (on mobile)
+            if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > 50 && window.innerWidth <= 768) {
+              if (deltaX > 0) {
+                // Swipe left - switch units
+                switchBtn.click();
+              }
+            }
+          });
+          
+          // Prevent pull-to-refresh on mobile
+          document.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+              const touch = e.touches[0];
+              if (touch.clientY <= 50 && window.pageYOffset === 0) {
+                e.preventDefault();
+              }
+            }
+          });
+          
+        } else {
+          // Desktop hover effects
+          const buttons = document.querySelectorAll('.sidebar-button, .switch-btn');
+          
+          buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+              if (this.classList.contains('sidebar-button')) {
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(30, 144, 255, 0.7)';
+              } else {
+                this.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.3), 0 0 15px rgba(255, 0, 85, 0.7)';
+              }
+            });
+            
+            button.addEventListener('mouseleave', function() {
+              this.style.boxShadow = '';
+            });
+          });
+        }
+        
+        // Handle orientation change on mobile with enhanced responsiveness
+        window.addEventListener('orientationchange', function() {
+          // Hide elements temporarily to prevent visual glitches
+          if (window.innerWidth <= 768) {
+            const converterPanel = document.querySelector('.converter-panel');
+            converterPanel.style.opacity = '0.5';
+            
+            setTimeout(() => {
+              // Adjust switch button rotation based on orientation
+              const switchButton = document.getElementById('switch-btn');
+              if (window.innerHeight < window.innerWidth) {
+                // Landscape mode
+                switchButton.style.transform = '';
+              } else {
+                // Portrait mode
+                switchButton.style.transform = 'rotate(90deg)';
+              }
+              
+              // Restore opacity
+              converterPanel.style.opacity = '1';
+              
+              // Reperform conversion to ensure display is correct
+              performConversion();
+              
+              // Add glitch effect
+              addGlitchEffect(document.querySelector('.interface-title h1'));
+            }, 300);
+          }
+        });
+        
+        // Handle window resize for better mobile responsiveness
+        window.addEventListener('resize', function() {
+          if (window.innerWidth <= 768) {
+            // Ensure proper switch button orientation on mobile
+            const switchButton = document.getElementById('switch-btn');
+            if (window.innerHeight < window.innerWidth) {
+              // Landscape
+              switchButton.style.transform = '';
+            } else {
+              // Portrait
+              switchButton.style.transform = 'rotate(90deg)';
+            }
+            
+            // Ensure inputs are properly sized
+            const inputs = document.querySelectorAll('.input-field, .unit-select');
+            inputs.forEach(input => {
+              input.style.minHeight = '44px';
+              if (input.tagName === 'SELECT') {
+                input.style.fontSize = '16px'; // Prevent iOS zoom
+              }
+            });
+          }
+        });
+        
+        // Prevent zoom on double tap for specific elements on mobile
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+          const preventZoomElements = document.querySelectorAll('.conversion-tab, .switch-btn, .common-card');
+          
+          preventZoomElements.forEach(element => {
+            let lastTouchEnd = 0;
+            element.addEventListener('touchend', function(e) {
+              const now = (new Date()).getTime();
+              if (now - lastTouchEnd <= 300) {
+                e.preventDefault();
+              }
+              lastTouchEnd = now;
+            }, false);
+          });
+        }
+      }
+      
+      // Initialize the converter
+      function initConverter() {
+        // Mobile-specific initialization
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+          // Add mobile-specific CSS class for enhanced styling
+          document.body.classList.add('mobile-device');
+          
+          // iOS Safari specific initialization
+          if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            document.body.classList.add('ios-device');
+            
+            // Fix iOS Safari viewport issues
+            const viewport = document.querySelector('meta[name="viewport"]');
+            viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover');
+            
+            // Add iOS-specific styling for safe areas
+            document.documentElement.style.setProperty('--safe-area-inset-top', 'env(safe-area-inset-top)');
+            document.documentElement.style.setProperty('--safe-area-inset-bottom', 'env(safe-area-inset-bottom)');
+            
+            // Show iOS-specific message
+            setTimeout(() => {
+              addGlitchEffect(document.querySelector('.status-indicator'));
+            }, 1000);
+          }
+          
+          // Android Chrome specific initialization
+          if (/Android.*Chrome/.test(navigator.userAgent)) {
+            document.body.classList.add('android-chrome');
+            
+            // Fix Android Chrome address bar height issues
+            const setVH = () => {
+              const vh = window.innerHeight * 0.01;
+              document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            
+            setVH();
+            window.addEventListener('resize', setVH);
+          }
+          
+          // Mobile performance optimizations
+          document.addEventListener('touchstart', function() {}, { passive: true });
+          document.addEventListener('touchmove', function() {}, { passive: true });
+          
+          // Ensure proper switch button orientation on load
+          setTimeout(() => {
+            const switchButton = document.getElementById('switch-btn');
+            if (window.innerWidth <= 768) {
+              if (window.innerHeight < window.innerWidth) {
+                // Landscape
+                switchButton.style.transform = '';
+              } else {
+                // Portrait
+                switchButton.style.transform = 'rotate(90deg)';
+              }
+            }
+          }, 100);
+          
+          // Add mobile-specific loading indicator
+          const mobileIndicator = document.createElement('div');
+          mobileIndicator.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(18, 18, 18, 0.9);
+            color: var(--secondary);
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 0.7rem;
+            z-index: 1000;
+            border: 1px solid var(--secondary);
+            box-shadow: 0 0 15px rgba(30, 144, 255, 0.3);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+          `;
+          mobileIndicator.textContent = '📱 MOBILE MODE';
+          document.body.appendChild(mobileIndicator);
+          
+          // Show mobile indicator briefly
+          setTimeout(() => {
+            mobileIndicator.style.opacity = '1';
+            setTimeout(() => {
+              mobileIndicator.style.opacity = '0';
+              setTimeout(() => {
+                document.body.removeChild(mobileIndicator);
+              }, 300);
+            }, 2000);
+          }, 500);
+        }
+        
+        // Set up event listeners
+        setupEventListeners();
+        
+        // Initial conversion setup
+        switchConversionType('length');
+        
+        // Enhanced mobile detection and initial setup
+        if (window.innerWidth <= 768) {
+          // Ensure all touch targets meet minimum size requirements
+          const touchTargets = document.querySelectorAll('.conversion-tab, .sidebar-button, .switch-btn');
+          touchTargets.forEach(target => {
+            const rect = target.getBoundingClientRect();
+            if (rect.height < 44) {
+              target.style.minHeight = '44px';
+              target.style.display = 'flex';
+              target.style.alignItems = 'center';
+              target.style.justifyContent = 'center';
+            }
+          });
+        }
+        
+        // Occasionally add glitch effect to UI elements
+        setInterval(() => {
+          const elements = [
+            document.querySelector('.status-indicator'),
+            document.querySelector('.interface-title h1')
+          ];
+          
+          // Randomly select an element to glitch
+          if (Math.random() < 0.1) {
+            const element = elements[Math.floor(Math.random() * elements.length)];
+            addGlitchEffect(element);
+          }
+        }, 5000);
+        
+        // Mobile-specific memory management
+        if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+          // Handle mobile app lifecycle
+          document.addEventListener('visibilitychange', function() {
+            if (document.hidden) {
+              // Clear any ongoing animations to save battery
+              const glitchElements = document.querySelectorAll('.glitch');
+              glitchElements.forEach(el => el.classList.remove('glitch'));
+            }
+          });
+          
+          window.addEventListener('pageshow', function(e) {
+            if (e.persisted) {
+              // Page was restored from cache, refresh conversion
+              performConversion();
+            }
+          });
+        }
+      }
+      
+      // Initialize on load
+      initConverter();
+    });
+  </script>
+</body>
+</html>
